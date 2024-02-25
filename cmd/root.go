@@ -7,11 +7,13 @@ package cmd
 import (
 	"os"
 	"fmt"
+	"log"
 	
 	"github.com/spf13/cobra"
+	"github.com/mitchellh/go-homedir"
 )
 
-
+var dataFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -45,7 +47,16 @@ func init() {
 
 	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.todo.yaml)")
 
+	home, err := homedir.Dir()
+	if err != nil {
+		log.Println("Unable to detect home directory.")
+	}
+
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	rootCmd.PersistentFlags().StringVar(&dataFile, "datafile", 
+	home+string(os.PathSeparator)+"Desktop"+string(os.PathSeparator)+"src"+string(os.PathSeparator)+"todo"+string(os.PathSeparator)+".todos.json",
+	"data file to store todos")
 }

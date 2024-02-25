@@ -12,6 +12,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// items, err := cont.ReadItems(datafile)
+
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
@@ -23,7 +25,7 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		items, err := cont.ReadItems("/home/void/Desktop/src/todo/todos.json")
+		items, err := cont.ReadItems(dataFile)
 
 		if err != nil {
 			log.Printf("%v", err)

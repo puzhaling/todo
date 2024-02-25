@@ -11,6 +11,9 @@ import (
 	"github.com/puzhaling/todo/cont"
 )
 
+// items, err := cont.ReadItems(dataFile)
+// err := cont.SaveItems(dataFile, items)
+
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add",
@@ -22,12 +25,12 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var items = []cont.Item{}
+		items, err := cont.ReadItems(dataFile)
 		for _, x := range args {
 			items = append(items, cont.Item{Text:x})
 		}
 		
-		err := cont.SaveItems("/home/void/Desktop/src/todo/.todos.json", items)
+		err = cont.SaveItems(dataFile, items)
 
 		if err != nil {
 			fmt.Errorf("%v", err)
