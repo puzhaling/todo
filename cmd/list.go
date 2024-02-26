@@ -7,31 +7,21 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"text/tabwriter"
+	"os"
+	"sort"
 
 	"github.com/puzhaling/todo/cont"
 	"github.com/spf13/cobra"
 )
 
-// items, err := cont.ReadItems(datafile)
 
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		items, err := cont.ReadItems(dataFile)
-
-		if err != nil {
-			log.Printf("%v", err)
-		}
-		fmt.Println(items)
-	},
+	Short: "list the todos",
+	Long: "list the todos in pretty way",
+	Run: listRun,
 }
 
 func init() {
@@ -46,4 +36,21 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// listCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+func listRun(cmd *cobra.Command, args []string) {
+	items, err := cont.ReadItems(dataFile)
+
+	if err != nil {
+		log.Printf("%v", err)
+	}
+
+	sort.Sort(cont.ByPri(items))
+	
+	w := tabwriter.NewWriter(os.Stdout, 3, 0, 1, ' ', 0)
+	for _, item := range items {
+		fmt.Fprintln(w, item.Label()+" "+item.PrettyP()+"\t"+item.Text+"\t")
+	}
+
+	w.Flush()
 }
