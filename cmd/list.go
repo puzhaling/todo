@@ -7,9 +7,9 @@ package cmd
 import (
 	"fmt"
 	"log"
-	"text/tabwriter"
 	"os"
 	"sort"
+	"text/tabwriter"
 
 	"github.com/puzhaling/todo/cont"
 	"github.com/spf13/cobra"
@@ -49,7 +49,6 @@ func listRun(cmd *cobra.Command, args []string) {
 		if allOpt || item.Done == doneOpt {
 			fmt.Fprintln(w, item.Label()+"\t"+item.PrettyDone()+"\t"+item.PrettyP()+"\t"+item.Text+"\t")
 		}
-		// fmt.Fprintln(w, item.Label()+"\t"+item.PrettyDone()+"\t"+item.PrettyP()+"\t"+item.Text+"\t")
 	}
 
 	w.Flush()
